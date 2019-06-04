@@ -9,7 +9,7 @@ from pyfiglet import Figlet
 from colorama import Fore, Back, Style
 import string
 from smb.SMBHandler import SMBHandler
-
+import smbmodule
 
 
 
@@ -93,179 +93,24 @@ else:
     lmhash = ''
     nthash = ''
 
-
-conn = SMBConnection(userID, password, server_name, server_name, use_ntlm_v2 = True, is_direct_tcp = True)
-conn.connect(server_ip, 445)
-
-resp = conn.listShares()
-shares = []
-
-
-for a in range(len(resp)):
-    shares.append(resp[a].name)
-
-
-files = []
-directories = []
-
-
-def walk_pathw(path):    
-    
-    for e in range(len(shares)):
-        try:
-            delta = []
-            delta = conn.listPath(shares[e], path)
-            for x in delta:
-                if x.filename == '..' or x.filename == '.':
-                    pass
-            
-                elif x.isDirectory > 0:
-                    parentPath = path
-                    if not parentPath.endswith('\\'):
-                        parentPath += '\\'
-                    walk_pathw(parentPath+x.filename)
-                    directories.append(x.filename)
-                
-                elif x.isDirectory == 0:
-                    parentPath = path
-                    if not parentPath.endswith('\\'):
-                        parentPath += '\\'
-		    var1 = parentPath
-		    var2 = re.sub(r'\\', '/', var1)
-		    for patterns in pattern:
-			if re.search(patterns, x.filename):
-			    if Windows == True:
-				fh = open(temp+'\\'+x.filename, 'wb')
-				conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				fh.close()
-				print "[*] "+x.filename+" found with your pattern it is in your temp dir"
-			    else:
-				fh = open(temp+'/'+x.filename, 'wb')
-				conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				fh.close()
-				print "[*] "+x.filename+" found with your pattern it is in your temp dir"
-			else:
-			    director = urllib2.build_opener(SMBHandler)
-			    ft = director.open('smb://'+userID+':'+password+'@'+server_ip+'/'+shares[e]+var2+x.filename)
-			    data = ft.read()
-			    for reg in regexs:
-			        if re.search(reg, data):
-			    	    if Windows == True:
-				        fh = open(temp+'\\'+x.filename, 'wb')
-				        conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				        fh.close()
-				        print "[*] Data found in"+x.filename+" with the follow "+reg
-			            else:
-				        fh = open(temp+'/'+x.filename, 'wb')
-				        conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				        fh.close()
-				        print "[*] Data found in"+x.filename+" with the follow "+reg
-				
-        except:
-            pass
-
-
-def walk_path(path):    
-    
-    for e in range(len(shares)):
-        try:
-            delta = []
-            delta = conn.listPath(shares[e], path)
-            for x in delta:
-                if x.filename == '..' or x.filename == '.':
-                    pass
-            
-                elif x.isDirectory > 0:
-                    parentPath = path
-                    if not parentPath.endswith('/'):
-                        parentPath += '/'
-                    walk_path(parentPath+x.filename)
-                    directories.append(x.filename)
-                
-                elif x.isDirectory == 0:
-                    parentPath = path
-                    if not parentPath.endswith('/'):
-                        parentPath += '/'
-		    var1 = parentPath
-		    for patterns in pattern:
-			if re.search(patterns, x.filename):
-			    if Windows == True:
-				fh = open(temp+'\\'+x.filename, 'wb')
-				conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				fh.close()
-				print "[*] "+x.filename+" found with your pattern it is in your temp dir"
-			    else:
-				fh = open(temp+'/'+x.filename, 'wb')
-				conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				fh.close()
-				print "[*] "+x.filename+" found with your pattern it is in your temp dir"
-			else:
-			    director = urllib2.build_opener(SMBHandler)
-			    ft = director.open('smb://'+userID+':'+password+'@'+server_ip+'/'+shares[e]+var2+x.filename)
-			    data = ft.read()
-			    for reg in regexs:
-			        if re.search(reg, data):
-			    	    if Windows == True:
-				        fh = open(temp+'\\'+x.filename, 'wb')
-				        conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				        fh.close()
-				        print "[*] Data found in"+x.filename+" with the follow "+reg
-			            else:
-				        fh = open(temp+'/'+x.filename, 'wb')
-				        conn.retrieveFile(shares[e], parentPath+x.filename, fh)
-				        fh.close()
-				        print "[*] Data found in"+x.filename+" with the follow "+reg
-				
-        except:
-            pass
-    
 print ""
 banner = Figlet(font='epic')
 print(banner.renderText("YAKA ---->>>"))
 
-print "\033[1;37;41m --> Downloading files...\033[0;37;40m\n"
+print "\033[1;37;41m --> Scanning files...\033[0;37;40m\n"
+
+p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
+conn, shares = p1.connlist()
+
+for ftx in shares:
+	print "[*] Share "+ftx+" is avaliable"
 
 if os == 'Win':
-    walk_pathw('\\')
+    smbmodule.walk_pathw(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs)
 elif os == 'Lin':
-    walk_path('/')
-'''
-def grepfile():
-    count = 0
-    for c in files:
-        for d in pattern:
-            if re.search(d, c):
-                print "\033[1;36;40m [*] \033[1;31;40m"+c+"\033[0;37;40m match with pattern\n"
-                count += 1
-            
-    if not count > 0:
-        print "\033[1;36;40m [*] \033[0;37;40m No file contains the desired pattern\n"  
+    smbmodule.walk_pathl(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs)
+else:
+    print "[*] Choice between Lin or Win options"
 
 
-def cred_card():
-    for y in files:
-        ft = open(temp+'/'+y)
-        for line in ft:
-            line = line.rstrip()
-            w = re.match(ccregex, line)
-            if w is not None:
-                print "\033[1;36;40m [*] \033[1;31;40m"+w.group(0)+"\033[0;37;40m appears to be a credit card number\n"
-    
 
-def search_pwd():
-    for t in files:
-        fu = open(temp+'/'+t)
-        for line in fu:
-            line = line.rstrip()
-            w = re.match(pwdregex, line)
-            if w is not None:
-                print "\033[1;36;40m [*] \033[1;31;40m"+w.group(0)+"\033[0;37;40m appears to be a password in "+t+"\n"
-
-
-print "\033[1;37;41m --> Runing credit card number search...\033[0;37;40m\n"
-#cred_card()
-print "\033[1;37;41m --> Runing password search...\033[0;37;40m\n"
-#search_pwd()
-print "\033[1;37;41m --> Runing filename search...\033[0;37;40m\n"
-#grepfile()
-'''

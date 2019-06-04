@@ -4,6 +4,7 @@ import argparse
 import re
 import tempfile
 import os
+from pyfiglet import Figlet
 import smbmodule
 
 
@@ -45,6 +46,8 @@ else:
 parser = argparse.ArgumentParser(add_help = True, description = "YAKA is a tool for search of files")
 
 
+
+
 group = parser.add_argument_group('authentication')
 
 group.add_argument('-U', action="store", metavar="username", help='Username for connection in SMB share')
@@ -57,8 +60,11 @@ group.add_argument('-dc-ip', action='store', metavar="ip-address", help='IP Addr
 group.add_argument('-target', action='store', metavar="ip-address", help='IP Address of the target machine. If omitted it will use whatever was specified as target. This is useful when target is the NetBIOS name and you cannot resolve it')
 group.add_argument('-port', choices=['139', '445'], nargs='?', default='445', metavar="destination port", help="Destination port to connect to SMB Server")
 group.add_argument('-O', action="store", metavar = "Lin or Win", help="OS to choise")
+group = parser.add_argument_group('modules')
+group.add_argument('-smb', action="store_true", help="Enable SMBModule")
 group = parser.add_argument_group('pattern')
 group.add_argument('-pattern', action='append', metavar="pattern", dest="collection", default=[], help="Pattern that will be search at name of files found")
+
 
 
 if len(sys.argv) ==1:
@@ -103,20 +109,23 @@ else:
 print ""
 print banner
 
-print "\033[1;37;41m --> Scanning files...\033[0;37;40m\n"
+if options.smb == True:
+    print "\033[1;37;41m --> Scanning files...\033[0;37;40m\n"
+    p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
+    conn, shares = p1.connlist()
 
-p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
-conn, shares = p1.connlist()
+    for ftx in shares:
+	    print "[*] Share "+ftx+" is avaliable"
 
-for ftx in shares:
-	print "[*] Share "+ftx+" is avaliable"
-
-if os == 'Win':
-    smbmodule.walk_pathw(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs)
-elif os == 'Lin':
-    smbmodule.walk_pathl(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs)
+    if os == 'Win':
+        smbmodule.walk_pathw(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs)
+    elif os == 'Lin':
+        smbmodule.walk_pathl(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs)
+    else:
+        print "[*] Choice between Lin or Win options"
 else:
-    print "[*] Choice between Lin or Win options"
-
+    print "\033[1;37;41m --> Please select a valid module\033[0;37;40m\n"
+    parser.print_help()
+    sys.exit(1)
 
 

@@ -64,7 +64,7 @@ group = parser.add_argument_group('modules')
 group.add_argument('-smb', action="store_true", help="Enable SMBModule")
 group = parser.add_argument_group('pattern')
 group.add_argument('-pattern', action='append', metavar="pattern", dest="collection", default=[], help="Pattern that will be search at name of files found")
-
+group.add_argument('-regex', action='append', metavar="regex", dest="collection2", default=[], help="Regex that will be search at content of files")
 
 
 if len(sys.argv) ==1:
@@ -81,10 +81,7 @@ domain = options.D
 hashes = options.hashes
 pattern = options.collection
 os = options.O
-ccregex = "([4-6]{1})([0-9]{3}-?)([0-9]{4}-?){2}([0-9]{4})"
-pwdregex = "senha?(=|:| |: )[a-zA-Z0-9_]{4,}"
-
-regexs = [pwdregex]
+regexs = options.collection2
 
 if server_name is None:
     server_name = ''

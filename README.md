@@ -9,3 +9,5 @@ Yaka is a tool of post-exploitation that search for files that contains sensitiv
 # Usage
 
 # Requirements
+pysmb
+pyfiglet

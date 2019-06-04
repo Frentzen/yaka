@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import argparse
 import re
@@ -7,7 +8,19 @@ from pyfiglet import Figlet
 import smbmodule
 
 
+banner = '''
 
+▄██   ▄      ▄████████    ▄█   ▄█▄    ▄████████ 
+███   ██▄   ███    ███   ███ ▄███▀   ███    ███ 
+███▄▄▄███   ███    ███   ███▐██▀     ███    ███ 
+▀▀▀▀▀▀███   ███    ███  ▄█████▀      ███    ███ 
+▄██   ███ ▀███████████ ▀▀█████▄    ▀███████████ 
+███   ███   ███    ███   ███▐██▄     ███    ███ 
+███   ███   ███    ███   ███ ▀███▄   ███    ███ 
+ ▀█████▀    ███    █▀    ███   ▀█▀   ███    █▀  
+                         ▀                      
+
+'''
 temp = tempfile.gettempdir()
 
 Windows = False
@@ -89,8 +102,7 @@ else:
     nthash = ''
 
 print ""
-banner = Figlet(font='epic')
-print(banner.renderText("YAKA ---->>>"))
+print banner
 
 print "\033[1;37;41m --> Scanning files...\033[0;37;40m\n"
 

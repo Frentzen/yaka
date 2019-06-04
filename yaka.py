@@ -81,6 +81,8 @@ domain = options.D
 hashes = options.hashes
 pattern = options.collection
 os = options.O
+#ccregex = "([4-6]{1})([0-9]{3}-?)([0-9]{4}-?){2}([0-9]{4})"
+#pwdregex = "senha?(=|:| |: )[a-zA-Z0-9_]{4,}"
 regexs = options.collection2
 
 if server_name is None:

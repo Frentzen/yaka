@@ -1,7 +1,7 @@
 # YAKA ---->>>
 
 <p align="center">
- <img width="720" height="898" src="https://i.pinimg.com/originals/5b/f1/0c/5bf10c6d52cbecb899c33acdc046cf42.jpg">
+ <img width="600" height="440" src="https://www.archery360.com/wp-content/uploads/2018/07/00-Hero-Yondu-Photo-Credit-chikinrise-Deviantart.jpg">
 </p>
 
 

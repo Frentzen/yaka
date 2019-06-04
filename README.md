@@ -1,4 +1,9 @@
 # YAKA ---->>>
+
+<p align="center">
+ <img width="720" height="898" src="https://i.pinimg.com/originals/5b/f1/0c/5bf10c6d52cbecb899c33acdc046cf42.jpg">
+</p>
+
 ```
 
 ▄██   ▄      ▄████████    ▄█   ▄█▄    ▄████████ 

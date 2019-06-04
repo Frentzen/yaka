@@ -4,7 +4,6 @@ import argparse
 import re
 import tempfile
 import os
-from pyfiglet import Figlet
 import smbmodule
 
 

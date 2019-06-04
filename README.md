@@ -59,5 +59,8 @@ python yaka.py -U <username> -P <password> -N <server_hostname> -target <ip-addr
 ```
 # Requirements
 ```
-pip install pysmb pyfiglet
+pip install pysmb
 ```
+# Improvements
+- [x] First stage SMB module
+- [ ] Implement hash authentication in SMB module

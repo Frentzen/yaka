@@ -99,6 +99,9 @@ elif password is not None and userID is None:
     parser.print_help()
     print ""
     print "\033[1;34;40m[*]\033[1;31;40m Please enter a valid username or left both field blank\n"
+elif userID is None and password is None:
+    password = ''
+    userID = ''
 
 if options.hashes is not None:
     lmhash, nthash = options.hashes.split(':')

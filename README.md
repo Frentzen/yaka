@@ -1,5 +1,3 @@
-# YAKA ---->>>
-
 <p align="center">
  <img width="600" height="440" src="https://www.archery360.com/wp-content/uploads/2018/07/00-Hero-Yondu-Photo-Credit-chikinrise-Deviantart.jpg">
 </p>

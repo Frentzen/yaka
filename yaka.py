@@ -1,14 +1,9 @@
 import sys
-import urllib2
 import argparse
 import re
 import tempfile
-from smb.SMBConnection import SMBConnection
 import os
 from pyfiglet import Figlet
-from colorama import Fore, Back, Style
-import string
-from smb.SMBHandler import SMBHandler
 import smbmodule
 
 

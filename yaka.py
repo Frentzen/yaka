@@ -113,10 +113,10 @@ print ""
 print banner
 
 if options.smb == True:
-    print (colored("--> Scanning for sensitive information in this shares:\n", 'white', 'on_red', attrs=['bold']))
+    print (colored("--> Scanning for sensitive information in this shares:", 'white', 'on_red', attrs=['bold']))
     p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
     conn, shares = p1.connlist()
-    
+    print ""
     for ftx in shares:
 	    print "[*] Share "+ftx+" is avaliable"
     print ""

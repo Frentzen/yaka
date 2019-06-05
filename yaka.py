@@ -110,7 +110,7 @@ else:
     nthash = ''
 
 print ""
-print banner
+print (colored(banner, 'green'))
 
 if options.smb == True:
     print (colored("--> Scanning for sensitive information in this shares:", 'white', 'on_red', attrs=['bold']))

@@ -121,7 +121,7 @@ if options.smb == True:
     
     if os == 'Win':
         smbmodule.smbtunner(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs, os)
-    elif os == 'Lin'
+    elif os == 'Lin':
         smbmodule.smbtunner(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs, os)
     else:
         print "[*] Choice between Lin or Win options"

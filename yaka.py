@@ -6,6 +6,7 @@ import tempfile
 import os
 from pyfiglet import Figlet
 import smbmodule
+from termcolor import colored
 
 
 banner = '''

@@ -4,6 +4,7 @@ from smb.SMBConnection import SMBConnection
 from smb.SMBHandler import SMBHandler
 import threading
 import Queue
+from termcolor import colored
 
 class SMBModule:
 
@@ -74,12 +75,12 @@ def walk_pathw(userID, password, server_ip, shared, conn, path, patterns, Window
                             fh = open(temp+'\\'+x.filename, 'wb')
                             conn.retrieveFile(shared, parentPath+x.filename, fh)
                             fh.close()
-                            print "[*] "+x.filename+" found with your pattern it is in your temp dir"
+                            print(colored("[*] ", 'green')+x.filename+" found with the pattern desired")
                         else:
                             fh = open(temp+'/'+x.filename, 'wb')
                             conn.retrieveFile(shared, parentPath+x.filename, fh)
                             fh.close()
-                            print "[*] "+x.filename+" found with your pattern it is in your temp dir"
+                            print(colored("[*] ", 'green')+x.filename+" found with the pattern desired")
                     else:
                         director = urllib2.build_opener(SMBHandler)
                         ft = director.open('smb://'+userID+':'+password+'@'+server_ip+'/'+shared+var2+x.filename)
@@ -90,12 +91,12 @@ def walk_pathw(userID, password, server_ip, shared, conn, path, patterns, Window
                                     fh = open(temp+'\\'+x.filename, 'wb')
                                     conn.retrieveFile(shared, parentPath+x.filename, fh)
                                     fh.close()
-                                    print "[*] Data found in "+x.filename+" with the follow regex: "+reg+"\n"
+                                    print(colored("[*] ", 'blue')+"Data found in "+x.filename+" with the follow regex: "+reg+"\n")
                                 else:
                                     fh = open(temp+'/'+x.filename, 'wb')
                                     conn.retrieveFile(shared, parentPath+x.filename, fh)
                                     fh.close()
-                                    print "[*] Data found in "+x.filename+" with the follow regex: "+reg+"\n"
+                                    print(colored("[*] ", 'blue')+"Data found in "+x.filename+" with the follow regex: "+reg+"\n")
     except:
         pass
 

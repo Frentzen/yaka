@@ -75,12 +75,12 @@ def walk_pathw(userID, password, server_ip, shared, conn, path, patterns, Window
                             fh = open(temp+'\\'+x.filename, 'wb')
                             conn.retrieveFile(shared, parentPath+x.filename, fh)
                             fh.close()
-                            print(colored("[*] ", 'green')+x.filename+" found with the pattern desired")
+                            print(colored("[*] ", 'green')+x.filename+" found with the pattern desired\n")
                         else:
                             fh = open(temp+'/'+x.filename, 'wb')
                             conn.retrieveFile(shared, parentPath+x.filename, fh)
                             fh.close()
-                            print(colored("[*] ", 'green')+x.filename+" found with the pattern desired")
+                            print(colored("[*] ", 'green')+x.filename+" found with the pattern desired\n")
                     else:
                         director = urllib2.build_opener(SMBHandler)
                         ft = director.open('smb://'+userID+':'+password+'@'+server_ip+'/'+shared+var2+x.filename)

@@ -113,7 +113,7 @@ print ""
 print banner
 
 if options.smb == True:
-    print "\033[1;37;41m --> Scanning files...\033[0;37;40m\n"
+    print (colored("--> Scanning files...", 'white', 'on_red', attrs=['bold']))
     p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
     conn, shares = p1.connlist()
     

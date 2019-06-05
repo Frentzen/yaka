@@ -11,15 +11,15 @@ from termcolor import colored
 
 banner = '''
 
-▄██   ▄      ▄████████    ▄█   ▄█▄    ▄████████ 
-███   ██▄   ███    ███   ███ ▄███▀   ███    ███ 
-███▄▄▄███   ███    ███   ███▐██▀     ███    ███ 
-▀▀▀▀▀▀███   ███    ███  ▄█████▀      ███    ███ 
-▄██   ███ ▀███████████ ▀▀█████▄    ▀███████████ 
-███   ███   ███    ███   ███▐██▄     ███    ███ 
-███   ███   ███    ███   ███ ▀███▄   ███    ███ 
- ▀█████▀    ███    █▀    ███   ▀█▀   ███    █▀  
-                         ▀                      
+                                                    ▄██   ▄      ▄████████    ▄█   ▄█▄    ▄████████ 
+                                                    ███   ██▄   ███    ███   ███ ▄███▀   ███    ███ 
+                                                    ███▄▄▄███   ███    ███   ███▐██▀     ███    ███ 
+                                                    ▀▀▀▀▀▀███   ███    ███  ▄█████▀      ███    ███ 
+                                                    ▄██   ███ ▀███████████ ▀▀█████▄    ▀███████████ 
+                                                    ███   ███   ███    ███   ███▐██▄     ███    ███ 
+                                                    ███   ███   ███    ███   ███ ▀███▄   ███    ███ 
+                                                    ▀█████▀    ███    █▀    ███   ▀█▀   ███    █▀  
+                                                                            ▀                      
 
 '''
 temp = tempfile.gettempdir()
@@ -98,7 +98,7 @@ if password is None and userID != None and hashes is None:
 elif password is not None and userID is None:
     parser.print_help()
     print ""
-    print "\033[1;34;40m[*]\033[1;31;40m Please enter a valid username or left both field blank\n"
+    print(colored("Please enter a valid username or left both field blank", 'white', 'on_red', attrs=['bold']))
 elif userID is None and password is None:
     password = ''
     userID = ''
@@ -125,11 +125,11 @@ if options.smb == True:
     elif os == 'Lin':
         smbmodule.smbtunner(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs, os)
     else:
-        print "[*] Choice between Lin or Win options"
+        print(colored("Please select between Win or Lin", 'white', 'on_red', attrs=['bold']))
         parser.print_help
         sys.exit(1)
 else:
-    print "\033[1;37;41m --> Please select a valid module\033[0;37;40m\n"
+    print (colored("Please select a valid module", 'white', 'on_red', attrs=['bold']))
     parser.print_help()
     sys.exit(1)
 

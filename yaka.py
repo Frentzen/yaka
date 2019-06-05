@@ -115,16 +115,18 @@ if options.smb == True:
     print "\033[1;37;41m --> Scanning files...\033[0;37;40m\n"
     p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
     conn, shares = p1.connlist()
-
+    
     for ftx in shares:
 	    print "[*] Share "+ftx+" is avaliable"
-
+    
     if os == 'Win':
-        smbmodule.walk_pathw(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs)
-    elif os == 'Lin':
-        smbmodule.walk_pathl(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs)
+        smbmodule.smbtunner(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs, os)
+    elif os == 'Lin'
+        smbmodule.smbtunner(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs, os)
     else:
         print "[*] Choice between Lin or Win options"
+        parser.print_help
+        sys.exit(1)
 else:
     print "\033[1;37;41m --> Please select a valid module\033[0;37;40m\n"
     parser.print_help()

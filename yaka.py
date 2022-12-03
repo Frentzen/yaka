@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import argparse
-import re
-import tempfile
-import os
-from pyfiglet import Figlet
-import smbmodule
+import smbdiscovery
 from termcolor import colored
 
 
@@ -22,27 +18,7 @@ banner = '''
                                                                             ▀                      
 
 '''
-temp = tempfile.gettempdir()
 
-Windows = False
-
-
-temp = tempfile.gettempdir()
-if re.search("[Cc]:", temp):
-    Windows = True
-
-if Windows == True:
-    if os.path.exists(temp+'\\'+'storage'):
-        temp += '\\storage'
-    else:
-        os.system("mkdir "+temp+"\\storage")
-
-else:
-    if os.path.exists(temp+'/'+'storage'):
-        temp += '/storage'
-    else:
-        os.system("mkdir "+ temp+'/storage')
-        temp += '/storage'
 
 parser = argparse.ArgumentParser(add_help = True, description = "YAKA is a tool for search of files")
 
@@ -59,6 +35,7 @@ group.add_argument('-hashes', action="store", metavar = "LMHASH:NTHASH", help='N
 group = parser.add_argument_group('connection')
 group.add_argument('-dc-ip', action='store', metavar="ip-address", help='IP Address of the domain controller. If omitted it will use the domain part (FQDN) specified in the target parameter')
 group.add_argument('-target', action='store', metavar="ip-address", help='IP Address of the target machine. If omitted it will use whatever was specified as target. This is useful when target is the NetBIOS name and you cannot resolve it')
+group.add_argument('--network', action='store', metavar="ip-address", help='IP range of the network. If omitted it will use whatever was specified as target. This is useful when target is the NetBIOS name and you cannot resolve it')
 group.add_argument('-port', choices=['139', '445'], nargs='?', default='445', metavar="destination port", help="Destination port to connect to SMB Server")
 group.add_argument('-O', action="store", metavar = "Lin or Win", help="OS to choise")
 group = parser.add_argument_group('modules')
@@ -85,52 +62,11 @@ os = options.O
 #ccregex = "([4-6]{1})([0-9]{3}-?)([0-9]{4}-?){2}([0-9]{4})"
 #pwdregex = "senha?(=|:| |: )[a-zA-Z0-9_]{4,}"
 regexs = options.collection2
+network = options.network
 
-if server_name is None:
-    server_name = ''
+scanner = smbdiscovery.SMBScanner(network)
+smb_servers = scanner.scan()
 
-if domain is None:
-    domain = ''
 
-if password is None and userID != None and hashes is None:
-    from getpass import getpass
-    password = getpass("Password: ")
-elif password is not None and userID is None:
-    parser.print_help()
-    print ""
-    print(colored("Please enter a valid username or left both field blank", 'white', 'on_red', attrs=['bold']))
-elif userID is None and password is None:
-    password = ''
-    userID = ''
-
-if options.hashes is not None:
-    lmhash, nthash = options.hashes.split(':')
-else:
-    lmhash = ''
-    nthash = ''
-
-print ""
-print (colored(banner, 'green'))
-
-if options.smb == True:
-    print (colored("--> Scanning for sensitive information in this shares:", 'white', 'on_red', attrs=['bold']))
-    p1 = smbmodule.SMBModule(userID, password, server_name, server_ip, domain)
-    conn, shares = p1.connlist()
-    print ""
-    for ftx in shares:
-	    print "[*] Share "+ftx+" is avaliable"
-    print ""
-    if os == 'Win':
-        smbmodule.smbtunner(userID, password, server_ip, shares, conn, '\\', pattern, Windows, temp, regexs, os)
-    elif os == 'Lin':
-        smbmodule.smbtunner(userID, password, server_ip, shares, conn, '/', pattern, Windows, temp, regexs, os)
-    else:
-        print(colored("Please select between Win or Lin", 'white', 'on_red', attrs=['bold']))
-        parser.print_help
-        sys.exit(1)
-else:
-    print (colored("Please select a valid module", 'white', 'on_red', attrs=['bold']))
-    parser.print_help()
-    sys.exit(1)
 
 

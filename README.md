@@ -66,4 +66,4 @@ pip install pysmb
 ```
 # Improvements
 - [x] First stage SMB module
-- [ ] Implement hash authentication in SMB module
+- [x] Implement hash authentication in SMB module

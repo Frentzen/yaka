@@ -3,6 +3,8 @@ import sys
 import argparse
 import smbdiscovery
 from termcolor import colored
+import threading
+import cidr
 
 
 banner = '''
@@ -64,8 +66,11 @@ os = options.O
 regexs = options.collection2
 network = options.network
 
+
+
 scanner = smbdiscovery.SMBScanner(network)
 smb_servers = scanner.scan()
+print(smb_servers)
 
 
 

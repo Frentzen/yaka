@@ -5,19 +5,23 @@ import time
 import cidr
 
 
+
 class SMBScanner:
     def __init__(self, network):
 
         self.network = network
+        self.smbs = []
+        
 
 
-
-    def scan_ip(self, ip_address, smb_servers, sock):
+    def scan_ip(self, ip_address, sock):
         try:
+
             sock.settimeout(1)
             sock.connect((ip_address, 445))
             print(f'The {ip_address} has a SMB')
-            smb_servers.append(ip_address)
+            
+            self.smbs.append(ip_address)
             
         except socket.error:
             
@@ -28,7 +32,6 @@ class SMBScanner:
     
     def scan(self):
 
-        smb_servers = []
         threads = []
         current_ip = ipaddress.ip_address(socket.gethostbyname(socket.gethostname()))
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,7 +39,7 @@ class SMBScanner:
         ips = cidrs.get_ips()
         
         for i in ips:
-            thread = threading.Thread(target=self.scan_ip, args=(i, smb_servers, sock))
+            thread = threading.Thread(target=self.scan_ip, args=(i, sock))
             thread.start()
             threads.append(thread)
 
@@ -45,7 +48,7 @@ class SMBScanner:
 
 
         
-        return smb_servers
+        return self.smbs
 
 
 

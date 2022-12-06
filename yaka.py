@@ -3,8 +3,7 @@ import sys
 import argparse
 import smbdiscovery
 from termcolor import colored
-import threading
-import cidr
+
 
 
 banner = '''
@@ -38,6 +37,7 @@ group = parser.add_argument_group('connection')
 group.add_argument('-dc-ip', action='store', metavar="ip-address", help='IP Address of the domain controller. If omitted it will use the domain part (FQDN) specified in the target parameter')
 group.add_argument('-target', action='store', metavar="ip-address", help='IP Address of the target machine. If omitted it will use whatever was specified as target. This is useful when target is the NetBIOS name and you cannot resolve it')
 group.add_argument('--network', action='store', metavar="ip-address", help='IP range of the network. If omitted it will use whatever was specified as target. This is useful when target is the NetBIOS name and you cannot resolve it')
+group.add_argument('--threads', action='store', metavar="threads", help='Theads to run simutaneously')
 group.add_argument('-port', choices=['139', '445'], nargs='?', default='445', metavar="destination port", help="Destination port to connect to SMB Server")
 group.add_argument('-O', action="store", metavar = "Lin or Win", help="OS to choise")
 group = parser.add_argument_group('modules')
@@ -53,25 +53,10 @@ if len(sys.argv) ==1:
     
 options = parser.parse_args()
 
-userID = options.U
-password = options.P
-server_name = options.N
-server_ip = options.target
-domain = options.D
-hashes = options.hashes
-pattern = options.collection
-os = options.O
-#ccregex = "([4-6]{1})([0-9]{3}-?)([0-9]{4}-?){2}([0-9]{4})"
-#pwdregex = "senha?(=|:| |: )[a-zA-Z0-9_]{4,}"
-regexs = options.collection2
-network = options.network
 
-
-
-scanner = smbdiscovery.SMBScanner(network)
+scanner = smbdiscovery.SMBScanner(options.network, options.threads)
 smb_servers = scanner.scan()
 print(smb_servers)
-
 
 
 
